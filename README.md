@@ -23,7 +23,18 @@ Creem la nova rama ci_jenkins
 
 #### Instalar plugin
 
+Dins del servidor de Jenkins, en Panel de Control > Administrar Jenkins > Plugins > Available , busquem Build Monitor View e instalem
+![](capturas/plugin/buscar.png)
+
+El configurem
+![](capturas/plugin/crear_vista.png)
+
+La vista del plugin, quedaria aixi en un primer moment. 
+![](capturas/plugin/primera.png)
+
 #### Linter
+
+Creem un arxiu Jenkinsfile a l' arrel del projecte i creem una pipeline
 
 #### Test
 
