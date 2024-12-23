@@ -12,7 +12,7 @@ pipeline {
                         parameters: [
                             string(name: 'Executor', description: 'Nom de la persona que executa la pipeline'),
                             string(name: 'Motiu', description: 'Motiu per executar la pipeline'),
-                            string(name: 'Chat ID', description: 'ID del xat de Telegram per a notificacions')
+                            string(name: 'Chat_ID', description: 'ID del xat de Telegram per a notificacions')
                         ]
                 }
             }
@@ -20,9 +20,9 @@ pipeline {
         stage('Comprovar inputs') {
             steps {
                 sh '''
-                echo "Executor: $Parms.Executor"
-                echo "Motiu: $Parms.Motiu"
-                echo "Chat ID: $Parms.Chat_ID"
+                echo "Executor: $Params.Executor"
+                echo "Motiu: $Params.Motiu"
+                echo "Chat ID: $Params.Chat_ID"
                 '''
             }
         }
