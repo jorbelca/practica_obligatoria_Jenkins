@@ -12,11 +12,11 @@ pipeline {
         stage('Comprovar inputs') {
             steps {
                 script {
-                    sh ''' 
-                    Executor: `${params.Executor}`\n
-                    Motiu: `${params.Motiu}`\n
-                    Chat ID: `${params.Chat_ID}`
-                     '''
+                    sh """
+                    echo "Executor: ${params.Executor}"
+                    echo "Motiu: ${params.Motiu}"
+                    echo "Chat ID: ${params.Chat_ID}"
+                    """
                 }
             }
         }
