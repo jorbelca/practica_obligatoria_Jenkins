@@ -24,6 +24,10 @@ module.exports = {
   // Base config
   extends: ["eslint:recommended"],
 
+  rules: {
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
+  },
   overrides: [
     // React
     {

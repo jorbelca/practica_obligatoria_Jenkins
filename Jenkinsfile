@@ -9,25 +9,25 @@ pipeline {
         string(name: 'Chat_ID',defaultValue:'01234', description: 'ID del xat de Telegram per a notificacions')
     }
     stages {
-        stage('Comprovar inputs') {
-            steps {
-                script {
-                    sh """
-                    echo "Executor: ${params.Executor}"
-                    echo "Motiu: ${params.Motiu}"
-                    echo "Chat ID: ${params.Chat_ID}"
-                    """
-                }
-            }
-        }
-
-        // stage('lint') {
+        // stage('Comprovar inputs') {
         //     steps {
-        //         sh '''
-        //         npm install
-        //         npm run lint
-        //         '''
+        //         script {
+        //             sh """
+        //             echo "Executor: ${params.Executor}"
+        //             echo "Motiu: ${params.Motiu}"
+        //             echo "Chat ID: ${params.Chat_ID}"
+        //             """
+        //         }
         //     }
         // }
+
+        stage('lint') {
+            steps {
+                sh '''
+                npm install
+                npm run lint
+                '''
+            }
+        }
     }      
 }

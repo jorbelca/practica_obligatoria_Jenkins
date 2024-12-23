@@ -7,6 +7,11 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+
+function hello (){
+  return "Hello"
+}
+
 export default function Index() {
   return (
     <div className="flex h-screen items-center justify-center">

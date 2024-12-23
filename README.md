@@ -36,6 +36,7 @@ La vista del plugin, quedaria aixi en un primer moment.
 Hem de crear una primera stage que demane per pantalla al executar el pipeline: Executor, Motiu, Chat ID
 Per aixo creem un arxiu Jenkinsfile a l' arrel del projecte i creem una pipeline.
 
+
 #### Linter
 
 
