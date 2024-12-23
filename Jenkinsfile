@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // Captura els valors de l'etapa input
-                    env.Executor = input message: 'Proporcioneu les dades necessàries:',
+                    env.Params = input message: 'Proporcioneu les dades necessàries:',
                         parameters: [
                             string(name: 'Executor', description: 'Nom de la persona que executa la pipeline'),
                             string(name: 'Motiu', description: 'Motiu per executar la pipeline'),
@@ -20,20 +20,20 @@ pipeline {
         stage('Comprovar inputs') {
             steps {
                 sh '''
-                echo "Executor: $Executor"
-                echo "Motiu: $Motiu"
-                echo "Chat ID: $Chat_ID"
+                echo "Executor: $Parms.Executor"
+                echo "Motiu: $Parms.Motiu"
+                echo "Chat ID: $Parms.Chat_ID"
                 '''
             }
         }
 
-        stage('lint') {
-            steps {
-                sh '''
-                npm install
-                npm run lint
-                '''
-            }
-        }
+        // stage('lint') {
+        //     steps {
+        //         sh '''
+        //         npm install
+        //         npm run lint
+        //         '''
+        //     }
+        // }
     }      
 }
