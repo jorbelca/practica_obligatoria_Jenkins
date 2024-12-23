@@ -17,15 +17,15 @@ pipeline {
                 }
             }
         }
-        stage('Comprovar inputs') {
-            steps {
-                sh '''
-                echo "Executor: $Params.Executor"
-                echo "Motiu: $Params.Motiu"
-                echo "Chat ID: $Params.Chat_ID"
-                '''
-            }
+       stage('Comprovar inputs') {
+        steps {
+            sh '''
+            echo "Executor: $Executor"
+            echo "Motiu: $Motiu"
+            echo "Chat ID: $Chat_ID"
+            '''
         }
+}
 
         // stage('lint') {
         //     steps {
