@@ -32,9 +32,21 @@ El configurem
 La vista del plugin, quedaria aixi en un primer moment. 
 ![](capturas/plugin/primera.png)
 
+#### Parametres
+Hem de crear una primera stage que demane per pantalla al executar el pipeline: Executor, Motiu, Chat ID
+Per aixo creem un arxiu Jenkinsfile a l' arrel del projecte i creem una pipeline.
+
 #### Linter
 
-Creem un arxiu Jenkinsfile a l' arrel del projecte i creem una pipeline
+
+En el meu cas no es precis instalar el plugin de eslint per a react. Ja que remix el du incorporat. 
+Captura del package.json 
+![](capturas/linter/package.png)
+
+Creem una primera stage del pipeline que incorpore el codi que ha de fer que s'execute el linter per part del servidor Jenkins
+
+
+![](capturas/linter/stage.png)
 
 #### Test
 
