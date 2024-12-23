@@ -1,26 +1,28 @@
 pipeline {
     agent any
-    tools{
+    tools {
         nodejs 'node 20'
     }
     stages {
         stage('Petició de dades') {
             steps {
-                input message: 'Proporcioneu les dades necessàries:',
-                    parameters: [
-                        string(name: 'Executor', description: 'Nom de la persona que executa la pipeline'),
-                        string(name: 'Motiu', description: 'Motiu per executar la pipeline'),
-                        string(name: 'Chat ID', description: 'ID del xat de Telegram per a notificacions')
-                    ]
+                script {
+                    // Captura els valors de l'etapa input
+                    env.Executor = input message: 'Proporcioneu les dades necessàries:',
+                        parameters: [
+                            string(name: 'Executor', description: 'Nom de la persona que executa la pipeline'),
+                            string(name: 'Motiu', description: 'Motiu per executar la pipeline'),
+                            string(name: 'Chat ID', description: 'ID del xat de Telegram per a notificacions')
+                        ]
+                }
             }
-
         }
         stage('Comprovar inputs') {
             steps {
                 sh '''
-                echo "Executor: ${params.Executor}"
-                echo "Motiu: ${params.Motiu}"
-                echo "Chat ID: ${params.Chat_ID}"
+                echo "Executor: $Executor"
+                echo "Motiu: $Motiu"
+                echo "Chat ID: $Chat_ID"
                 '''
             }
         }
