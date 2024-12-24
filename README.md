@@ -130,20 +130,28 @@ Introduim un `fallo` en els tests i comprovem en Jenkins que capture l'errror co
 ![](capturas/test/fallo.png)
 ![](capturas/test/wrong.png)
 
-
 #### Update Readme
+
 Cuando añades returnStatus: true, el pipeline no falla automáticamente si el comando retorna un código de error. En cambio, el comando devuelve el código de salida como un número, que puedes manejar tú mismo. Por ejemplo:
-	•	Si el comando tiene éxito (código de salida 0), la variable status será 0.
-	•	Si falla (código de salida distinto de 0), status contendrá ese valor (por ejemplo, 1, 2, etc.).
+• Si el comando tiene éxito (código de salida 0), la variable status será 0.
+• Si falla (código de salida distinto de 0), status contendrá ese valor (por ejemplo, 1, 2, etc.).
 
 #### Push Changes
 
 #### Build
+
+Creem una nova stage dins del Jenkinsfile. Aquesta solament fara us del comando _npm run build_, per a empaquetar el projecte
+![](capturas/build/stage.png)
+
+Fem un commit i comprovem en el pipeline de Jenkins
+![](capturas/build/result.png)
+
 #### Deploy Vercel
 
 #### Notificació
 
 ### RESULTADO DE LOS ÚLTIMOS TESTS
+
 <!---Start place for the badge -->
 
 <!---End place for the badge -->
