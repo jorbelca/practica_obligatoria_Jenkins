@@ -40,8 +40,19 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    npm run test
+                    def testResult = sh(script: 'npm test', returnStatus: true)
+                    env.TEST_RESULT = testResult == 0 ? 'success' : 'failure'
                     '''
+                }
+            }
+        }
+        stage('Update_Readme') {
+            steps {
+                script {
+                    // Llama al script pasando el resultado de los test como argumento
+                    sh """
+                    node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}
+                    """
                 }
             }
         }
