@@ -56,7 +56,7 @@ pipeline {
            post {
                 always{
                     script {
-                        sh "jenkinsScripts/push_changes.sh '${params.Executor}' '${params.Motiu}'"
+                        sh "jenkinsScripts/gitPush.sh '${params.Executor}' '${params.Motiu}'"
                     }
                 }
             }
