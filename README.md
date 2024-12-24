@@ -124,7 +124,11 @@ Creem una nova stage dins del Jenkinsfile. Per agilizar, s´ha decidit extraure 
 ![](capturas/test/jenkinsfile.png)
 
 Fem el commit i comprovem en Jenkins
+![](capturas/test/ok.png)
 
+Introduim un `fallo` en els tests i comprovem en Jenkins que capture l'errror correctamen
+![](capturas/test/fallo.png)
+![](capturas/test/wrong.png)
 #### Build
 
 #### Update Readme
