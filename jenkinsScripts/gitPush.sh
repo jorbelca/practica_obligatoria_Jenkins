@@ -17,4 +17,4 @@ git config --local user.email "jenkins@ci.com"
 # Afegir, commitejar i fer push dels canvis
 git add README.md
 git commit -m "Pipeline executada per $PARAM_EXECUTOR. Motiu: $PARAM_MOTIU"
-git push origin ci_jenkins
+git push origin main
