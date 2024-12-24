@@ -43,7 +43,7 @@ pipeline {
         stage('Update_Readme') {
             steps {
                 script {
-                    sh 'node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}'
+                    sh "node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}"
                 }
             }
         }
