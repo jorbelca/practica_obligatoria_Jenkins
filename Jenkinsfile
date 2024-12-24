@@ -20,14 +20,31 @@ pipeline {
         //         }
         //     }
         // }
-
-        stage('lint') {
+        stage('Install dependencies') {
+            steps {
+                script {
+                    sh '''
+                    npm install
+                    '''
+                }
+            }
+        }
+        stage('Lint') {
             steps {
                 sh '''
-                npm install
                 npm run lint
                 '''
             }
         }
+        stage('Test') {
+            steps {
+                script {
+                    sh '''
+                    npm run test
+                    '''
+                }
+            }
+        }
+    
     }      
 }
