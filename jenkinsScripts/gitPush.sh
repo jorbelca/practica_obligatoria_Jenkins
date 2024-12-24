@@ -11,8 +11,8 @@ PARAM_MOTIU=$2
 
 
 # Configurar nom y correu
-git config --local user.name "$1"
-git config --local user.email "jenkins@ci.com"
+git config --local user.name "jorbelca"
+git config --local user.email "76847923+jorbelca@users.noreply.github.com"
 
 #descarregar totes les rames i cambiar a la de jenkins
 git fetch --all
