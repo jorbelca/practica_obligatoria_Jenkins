@@ -7,4 +7,4 @@ if [ -z "$VERCEL_TOKEN" ]; then
 fi
 
 # Executar el desplegament
-vercel --token $VERCEL_TOKEN --prod --confirm --cwd ./build
+vercel deploy --prod --yes --token $VERCEL_TOKEN
