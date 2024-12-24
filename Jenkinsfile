@@ -46,7 +46,7 @@ pipeline {
                     sh 'node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}'
                 }
             }
-    
+        }
         //    post {
         //         always{
         //             script {
@@ -54,7 +54,7 @@ pipeline {
         //             }
         //         }
         //     }
-        }
+        
         // stage("Push to Git Repository") {
         //     steps {
         //         withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
