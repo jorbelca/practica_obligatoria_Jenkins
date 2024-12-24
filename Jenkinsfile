@@ -39,10 +39,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh '''
                     def testResult = sh(script: 'npm test', returnStatus: true)
                     env.TEST_RESULT = testResult == 0 ? 'success' : 'failure'
-                    '''
                 }
             }
         }
