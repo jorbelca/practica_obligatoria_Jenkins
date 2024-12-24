@@ -144,9 +144,10 @@ Creem una nova stage dins del Jenkinsfile. Aquesta solament fara us del comando 
 ![](capturas/build/stage.png)
 
 Fem un commit i comprovem en el pipeline de Jenkins
-![](capturas/build/result.png)
+![](capturas/build/ok.png)
 
 #### Deploy Vercel
+
 
 #### Notificació
 
