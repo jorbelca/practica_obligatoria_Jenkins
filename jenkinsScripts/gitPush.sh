@@ -9,7 +9,12 @@ fi
 PARAM_EXECUTOR=$1
 PARAM_MOTIU=$2
 
+
+# Configurar nom y correu
+git config --local user.name "$1"
+git config --local user.email "jenkins@ci.com"
+
 # Afegir, commitejar i fer push dels canvis
 git add README.md
 git commit -m "Pipeline executada per $PARAM_EXECUTOR. Motiu: $PARAM_MOTIU"
-git push origin main
+git push origin ci_jenkins
