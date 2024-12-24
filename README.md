@@ -148,6 +148,39 @@ Fem un commit i comprovem en el pipeline de Jenkins
 
 #### Deploy Vercel
 
+Comencem creant un token a vercel per a que jenkins tinga permisos per a desplegar
+![](capturas/vercel/vercel_token.png)
+
+Guardem el token en una credencial global, per poder utilitzar-la en els pipelines de Jenkins
+![](capturas/vercel/credencial.png)
+
+Vinculem el projecte amb vercel, perque cree `.vercel/project.json` amb les caracteristiques del projecte
+![](capturas/vercel/link.png)
+
+Arxiu project.json
+![](capturas/vercel/vercel_json.png)
+
+Passem al projecte en si, primer creem el arxiu deployVercel.sh dins de /jenkinsScripts amb el seguent contingut:
+
+- Si no se li passa el token de vercel, retorna un error
+- En cas contrari, fa el deploy del projecte
+  ![](capturas/vercel/script.png)
+
+Canviem permisos del arxiu que conté el script, per a la maquina de Jenkins
+![](capturas/vercel/chmod.png)
+
+Creem una nova stage dins del jenkinsFile.
+
+- S'executa si totes les demes stages han acabat be (succesfull)
+- Primer instala el cli de vercel en la máquina de Jenkins
+- Despres executa el script anteriorment creat amb el token de Vercel com a credencial global
+  ![](capturas/vercel/stage.png)
+
+Fem el commit i comprovem els logs del pipeline
+![](capturas/vercel/ok.png)
+
+Finalment, naveguem al deploy (url mes amigable que es troba en el dashboard)
+![](capturas/vercel/deploy.png)
 
 #### Notificació
 

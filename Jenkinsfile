@@ -74,20 +74,18 @@ pipeline {
                 }
             }
         }
-        stage('Setup Vercel CLI') {
-            steps {
+    
+        stage('Deploy to Vercel') {
+            when {
+                allOf {
+                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' } // Només si tot ha anat bé
+                }
+            }
+            steps { 
+                // Instalar el CLI de vercel en Jenkins
                 script {
                     sh 'npm install -g vercel'
                 }
-            }
-        }
-        stage('Deploy to Vercel') {
-            // when {
-            //     allOf {
-            //         expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' } // Només si tot ha anat bé
-            //     }
-            // }
-            steps {
                 script {
                     // Executar l'script per desplegar a Vercel
                     withCredentials([string(credentialsId: 'vercel-token-id', variable: 'VERCEL_TOKEN')]) {
