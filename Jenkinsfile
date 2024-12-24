@@ -61,6 +61,13 @@ pipeline {
                 }
             }
         }
+        stage("Push to Git Repository") {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'Github-Credentials', gitToolName: 'Default')]) {
+                    sh "git push -u origin ci_jenkins"
+                }
+            }
+        }
     
     }      
 }
