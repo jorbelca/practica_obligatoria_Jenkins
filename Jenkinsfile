@@ -74,7 +74,13 @@ pipeline {
                 }
             }
         }
-
+        stage('Setup Vercel CLI') {
+            steps {
+                script {
+                    sh 'npm install -g vercel'
+                }
+            }
+        }
         stage('Deploy to Vercel') {
             // when {
             //     allOf {
