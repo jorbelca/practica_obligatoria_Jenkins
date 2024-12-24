@@ -47,10 +47,17 @@ pipeline {
         stage('Update_Readme') {
             steps {
                 script {
-                    // Llama al script pasando el resultado de los test como argumento
                     sh """
                     node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}
                     """
+                }
+            }
+    
+           post {
+                always{
+                    script {
+                        sh "jenkinsScripts/push_changes.sh '${params.Executor}' '${params.Motiu}'"
+                    }
                 }
             }
         }
