@@ -29,8 +29,10 @@ pipeline {
         }
         stage('Lint') {
             steps {
+                script{
                     def lintResult = sh(script: 'npm run lint', returnStatus: true)
                     env.ESLINT_RESULT = lintResult == 0 ? 'success' : 'failure'
+                }
             }
         }
         stage('Test') {
