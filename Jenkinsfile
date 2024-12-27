@@ -9,17 +9,6 @@ pipeline {
         string(name: 'Chat_ID',defaultValue:'01234', description: 'ID del xat de Telegram per a notificacions')
     }
     stages {
-        // stage('Comprovar inputs') {
-        //     steps {
-        //         script {
-        //             sh """
-        //             echo "Executor: ${params.Executor}"
-        //             echo "Motiu: ${params.Motiu}"
-        //             echo "Chat ID: ${params.Chat_ID}"
-        //             """
-        //         }
-        //     }
-        // }
         stage('Install dependencies') {
             steps {
                 script {
@@ -100,19 +89,19 @@ pipeline {
             }
         }
 
-    stage('Notification') {
-                steps { 
-                    script {
-                        // Executar l'script per notificar a Telegram
-                        withCredentials([string(credentialsId: 'bot_token', variable: 'BOT_TOKEN')]) {
-                             sh """
-                            node ./jenkinsScripts/notification.js ${params.Chat_ID} \
-                            ${env.ESLINT_RESULT} ${env.TEST_RESULT} ${env.README_RESULT} ${env.DEPLOY_RESULT}
-                            """
+        stage('Notification') {
+                    steps { 
+                        script {
+                            // Executar l'script per notificar a Telegram
+                            withCredentials([string(credentialsId: 'bot_token', variable: 'BOT_TOKEN')]) {
+                                sh """
+                                node ./jenkinsScripts/notification.js ${params.Chat_ID} \
+                                ${env.ESLINT_RESULT} ${env.TEST_RESULT} ${env.README_RESULT} ${env.DEPLOY_RESULT}
+                                """
+                            }
                         }
                     }
                 }
-            }
     
     }      
 }

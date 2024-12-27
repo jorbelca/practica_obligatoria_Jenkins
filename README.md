@@ -1,9 +1,11 @@
 # Jenkins
 
 ## Teoria
+
 # Jenkins
 
 ## Índex
+
 - [Què és Jenkins?](#què-és-jenkins)
 - [Arquitectura](#arquitectura)
 - [Tipus de tasques](#tipus-de-tasques)
@@ -15,18 +17,22 @@
 ---
 
 ## Què és Jenkins?
+
 Jenkins és un servidor de codi obert que automatitza tasques relacionades amb la creació, prova i implementació de programari.
 
 ---
 
 ## Arquitectura
+
 Jenkins utilitza una arquitectura mestre/esclau:
+
 - **Mestre**: Programa treballs, envia tasques als esclaus, monitora el seu estat i recupera resultats.
 - **Esclau**: Executa els treballs enviats pel mestre.
 
 ---
 
 ## Tipus de tasques
+
 - **Projecte d'estil lliure**: Tasques simples.
 - **Pipeline**: Fluxos de treball sencers.
 - **Multiconfiguració**: Execució en múltiples entorns.
@@ -37,6 +43,7 @@ Jenkins utilitza una arquitectura mestre/esclau:
 ---
 
 ## Avantatges
+
 - Codi obert amb gran comunitat de suport.
 - Configuració senzilla i extensible amb més de 1000 plugins.
 - Basat en Java, compatible amb diverses plataformes.
@@ -44,14 +51,16 @@ Jenkins utilitza una arquitectura mestre/esclau:
 ---
 
 ## Instal·lació
+
 Es pot instal·lar amb paquets del sistema, Docker o com a aplicació independent amb Java Runtime Environment.
 
 ### Exemple amb Docker:
+
 ```bash
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenkins/jenkins
 ```
-## Executant una primera tasca
 
+## Executant una primera tasca
 
 1. **Accedir a Jenkins**: Realitzar login.
 2. **Crear nova tasca**: Assignar un nom, seleccionar "Projecte d'estil lliure" i prémer OK.
@@ -256,7 +265,8 @@ Passem al projecte en si, primer creem el arxiu deployVercel.sh dins de /jenkins
 
 - Si no se li passa el token de vercel, retorna un error
 - En cas contrari, fa el deploy del projecte
-  ![](capturas/vercel/script.png)
+
+![](capturas/vercel/script.png)
 
 Canviem permisos del arxiu que conté el script, per a la maquina de Jenkins
 ![](capturas/vercel/chmod.png)
@@ -266,7 +276,8 @@ Creem una nova stage dins del jenkinsFile.
 - S'executa si totes les demes stages han acabat be (succesfull)
 - Primer instala el cli de vercel en la máquina de Jenkins
 - Despres executa el script anteriorment creat amb el token de Vercel com a credencial global
-  ![](capturas/vercel/stage.png)
+
+![](capturas/vercel/stage.png)
 
 Fem el commit i comprovem els logs del pipeline
 ![](capturas/vercel/ok.png)
@@ -275,6 +286,37 @@ Finalment, naveguem al deploy (url mes amigable que es troba en el dashboard)
 ![](capturas/vercel/deploy.png)
 
 #### Notificació
+
+Comencem instalant la llibreria node-telegram-bot-api en el projecte. Així, quant en el primer stage s'execute el npm install, estará disponible.
+![](capturas/notification/npm_i.png)
+
+Guardem el token del bot de Telegram en una credencial global, per poder utilitzar-la en els pipelines de Jenkins. El token el tenimem a má, despres de realitzar la pràctica de Github Actions, pel que no ha fet falta tornar-lo a crear.
+![](capturas/notification/token.png)
+
+Creem un nou arxiu en `jenkinsScripts/notification.js`
+
+- Crea un nou bot
+- Agafa les cuatre variables dels procesos anteriors i la que inclou el Chat ID.
+- Es crea un missatge i el bot l' envia
+  ![](capturas/notification/script.png)
+
+Canviem permisos del arxiu que conté el script, per a la maquina de Jenkins
+![](capturas/notification/chmod.png)
+
+Creem una nova stage dins del jenkinsFile.
+
+- Executa el script anteriorment creat amb el token del bot com a credencial global. A mes de passarli el resultat de les demes stages i el ID del chat
+  ![](capturas/notification/stage.png)
+
+Per a passar el resultat de les stages, hem decidit crear variables d' entorn amb el resultat de cadscuna.
+![](capturas/notification/var_1.png)
+![](capturas/notification/var_2.png)
+
+Fem el commit i comprovem els logs del pipeline
+![](capturas/notification/ok.png)
+
+Finalment, visitem Telegram
+![](capturas/notification/message.png)
 
 ### RESULTADO DE LOS ÚLTIMOS TESTS
 
