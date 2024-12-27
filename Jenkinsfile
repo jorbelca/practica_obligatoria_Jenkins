@@ -29,7 +29,8 @@ pipeline {
         }
         stage('Lint') {
             steps {
-                sh 'npm run lint'
+                    def lintResult = sh(script: 'npm run lint', returnStatus: true)
+                    env.ESLINT_RESULT = lintResult == 0 ? 'success' : 'failure'
             }
         }
         stage('Test') {
@@ -43,7 +44,8 @@ pipeline {
         stage('Update_Readme') {
             steps {
                 script {
-                    sh "node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}"
+                    def update_readme = sh (script: "node jenkinsScripts/updateReadme.js ${env.TEST_RESULT}",returnStatus:true)
+                    env.README_RESULT = update_readme == 0 ? 'success' : 'failure'
                 }
             }
         }
@@ -89,11 +91,27 @@ pipeline {
                 script {
                     // Executar l'script per desplegar a Vercel
                     withCredentials([string(credentialsId: 'vercel-token-id', variable: 'VERCEL_TOKEN')]) {
-                        sh './jenkinsScripts/deployVercel.sh'
+                        def deploy = sh (script: './jenkinsScripts/deployVercel.sh' ,returnStatus:true)
+                        env.DEPLOY_RESULT = deploy == 0 ? 'success' : 'failure'
                     }
                 }
             }
         }
+
+    stage('Notification') {
+                steps { 
+                    // Instalar el bot de Telegram
+                    script {
+                        sh 'npm install node-telegram-bot-api'
+                    }
+                    script {
+                        // Executar l'script per notificar a Telegram
+                        withCredentials([string(credentialsId: 'bot-token', variable: 'BOT_TOKEN')]) {
+                            sh "./jenkinsScripts/notification.sh ${params.Chat_ID} ${env.ESLINT_RESULT} ${env.TEST_RESULT} ${env.README_RESULT} ${env.DEPLOY_RESULT}"
+                        }
+                    }
+                }
+            }
     
     }      
 }

@@ -1,6 +1,80 @@
 # Jenkins
 
 ## Teoria
+# Jenkins
+
+## Índex
+- [Què és Jenkins?](#què-és-jenkins)
+- [Arquitectura](#arquitectura)
+- [Tipus de tasques](#tipus-de-tasques)
+- [Avantatges](#avantatges)
+- [Instal·lació](#instal·lació)
+- [Executant una primera tasca](#executant-una-primera-tasca)
+- [Instal·lant plugins](#instal·lant-plugins)
+
+---
+
+## Què és Jenkins?
+Jenkins és un servidor de codi obert que automatitza tasques relacionades amb la creació, prova i implementació de programari.
+
+---
+
+## Arquitectura
+Jenkins utilitza una arquitectura mestre/esclau:
+- **Mestre**: Programa treballs, envia tasques als esclaus, monitora el seu estat i recupera resultats.
+- **Esclau**: Executa els treballs enviats pel mestre.
+
+---
+
+## Tipus de tasques
+- **Projecte d'estil lliure**: Tasques simples.
+- **Pipeline**: Fluxos de treball sencers.
+- **Multiconfiguració**: Execució en múltiples entorns.
+- **Carpeta**: Organització de tasques.
+- **Organització GitHub**: Escaneja comptes de GitHub per crear pipelines.
+- **Multibranch pipeline**: Pipelines per a diferents branques d'un projecte.
+
+---
+
+## Avantatges
+- Codi obert amb gran comunitat de suport.
+- Configuració senzilla i extensible amb més de 1000 plugins.
+- Basat en Java, compatible amb diverses plataformes.
+
+---
+
+## Instal·lació
+Es pot instal·lar amb paquets del sistema, Docker o com a aplicació independent amb Java Runtime Environment.
+
+### Exemple amb Docker:
+```bash
+docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenkins/jenkins
+```
+## Executant una primera tasca
+
+
+1. **Accedir a Jenkins**: Realitzar login.
+2. **Crear nova tasca**: Assignar un nom, seleccionar "Projecte d'estil lliure" i prémer OK.
+3. **Configurar la tasca**:
+   - **General**: Descripció i historial.
+   - **Repositori**: Configurar enllaç i branca de Git (si escau).
+   - **Execució**: Especificar quan i com executar (manual, periòdic, remot...).
+   - **Passos**: Definir accions concretes a realitzar.
+   - **Post-execució**: Accions després d'acabar la tasca.
+4. **Guardar i executar**: Prémer "Construir ara" per iniciar la tasca.
+5. **Revisar l'execució**: Consultar l'historial i la consola de resultats.
+
+---
+
+## Instal·lant plugins
+
+1. **Accedir al marketplace**: [plugins.jenkins.io](https://plugins.jenkins.io/).
+2. **Buscar un plugin**: Verificar compatibilitat, ús i documentació.
+3. **Instal·lar**: Seleccionar "Instal·lar sense reiniciar" o "Instal·lar i reiniciar".
+4. **Desinstal·lar (opcional)**:
+   - Eliminar el fitxer `.jpi` o `.hpi` de `/var/jenkins_home/plugins`.
+   - Reiniciar Jenkins.
+5. **Desactivar (opcional)**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
 
 ## Práctica
 
@@ -132,9 +206,27 @@ Introduim un `fallo` en els tests i comprovem en Jenkins que capture l'errror co
 
 #### Update Readme
 
-Cuando añades returnStatus: true, el pipeline no falla automáticamente si el comando retorna un código de error. En cambio, el comando devuelve el código de salida como un número, que puedes manejar tú mismo. Por ejemplo:
-• Si el comando tiene éxito (código de salida 0), la variable status será 0.
-• Si falla (código de salida distinto de 0), status contendrá ese valor (por ejemplo, 1, 2, etc.).
+Primer, modifiquem el README per donar lloc al badge en l'ultima part del document
+![](capturas/badge/readme.png)
+
+En /jenkinsScripts creem un nou arxiu `updateReadme.js` que contindra la funcionalitat per actualitzar el README.
+
+- Una funcio amb un parametre que sera el resultat del test
+- Segon el parametre (succesfull / failure) tindrá una image o altra
+- LLig el document i modifica una secció amb uns comentaris especifics per a incloure el badge
+- Es modifica l'arxiu README
+- Es crida a la funcio amb un argument que es passa al executar el script
+
+![](capturas/badge/script.png)
+
+Passem al jenkinsfile, creem una nova stage i modifiquem l' anterior que contenia els tests.
+
+- S' executen els tests i el resultat s'enmagatzema en una variable. Aquesta posteriorment, s'assignará a una variable d'entorn amb el valor success o failure. (Es fa ús del returnStatus per a controlar en cas de que fallen, i axí asignem el valor que volem i no es trenca el flow del programa)
+- S' executa el script anteriorment creat amb la variable d'entorn
+  ![](capturas/badge/stage.png)
+
+Fem un commit i executem la pipeline
+![](capturas/badge/failure_ok.png)
 
 #### Push Changes
 
