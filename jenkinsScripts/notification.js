@@ -2,15 +2,17 @@ const TelegramBot = require("node-telegram-bot-api");
 
 try {
   // Configuración del Bot
-  const chatID = process.argv[1];
-  // eslint-disable-next-line no-undef
-  const bot = new TelegramBot(token);
+
+  const bot = new TelegramBot(process.env.BOT_TOKEN);
+
+  const chatID = process.argv[2];
 
   // Resultados de los jobs
-  const linterResult = process.argv[2];
-  const testResult = process.argv[3];
-  const readmeResult = process.argv[4];
-  const deployResult = process.argv[5];
+
+  const linterResult = process.argv[3];
+  const testResult = process.argv[4];
+  const readmeResult = process.argv[5];
+  const deployResult = process.argv[6];
 
   // Crear mensaje
   const message = `

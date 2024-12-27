@@ -102,14 +102,13 @@ pipeline {
 
     stage('Notification') {
                 steps { 
-                    // Instalar el bot de Telegram
-                    script {
-                        sh 'npm install node-telegram-bot-api'
-                    }
                     script {
                         // Executar l'script per notificar a Telegram
                         withCredentials([string(credentialsId: 'bot_token', variable: 'BOT_TOKEN')]) {
-                            sh "./jenkinsScripts/notification.js ${params.Chat_ID} ${env.ESLINT_RESULT} ${env.TEST_RESULT} ${env.README_RESULT} ${env.DEPLOY_RESULT}"
+                            sh '''
+                            node ./jenkinsScripts/notification.js ${params.Chat_ID} \
+                             ${env.ESLINT_RESULT} ${env.TEST_RESULT} ${env.README_RESULT} ${env.DEPLOY_RESULT}
+                             '''
                         }
                     }
                 }
