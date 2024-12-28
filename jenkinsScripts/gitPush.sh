@@ -1,23 +1,14 @@
 #!/bin/bash
+set -e
 
-# Validació de paràmetres
-if [ $# -ne 2 ]; then
-  echo "Ús: $0 <PARAM_EXECUTOR> <PARAM_MOTIU>"
-  exit 1
-fi
+# Variables
+EXECUTOR=$1
+MOTIU=$2
 
-PARAM_EXECUTOR=$1
-PARAM_MOTIU=$2
+# Mensaje del commit
+COMMIT_MESSAGE="Pipeline executada per ${EXECUTOR}. Motiu: ${MOTIU}"
 
-
-# Configurar nom y correu
-git config --local user.name "$1"
-git config --local user.email "jenkis_obligatoria@test.com"
-
-#descarregar totes les rames i cambiar a la de jenkins
-# git fetch --all
-# git checkout ci_jenkins || git checkout -b ci_jenkins
-
-# Afegir, commitejar i fer push dels canvis
+# Ejecutar los comandos de Git
 git add README.md
-git commit -m "Pipeline executada per $PARAM_EXECUTOR. Motiu: $PARAM_MOTIU"
+git commit -m "$COMMIT_MESSAGE" || echo "No hay cambios para commitear"
+git push origin ci_jenkins || echo "Error al hacer push, verifica conflictos"
