@@ -8,7 +8,13 @@ MOTIU=$2
 # Mensaje del commit
 COMMIT_MESSAGE="Pipeline executada per ${EXECUTOR}. Motiu: ${MOTIU}"
 
-# Verificar si hay cambios sin añadir o commitear
+# Verificar si hay un rebase en curso
+if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
+  echo "Detectado un rebase en curso. Abortando rebase anterior..."
+  git rebase --abort || echo "No había rebase activo que abortar"
+fi
+
+# Verificar si hay cambios locales no añadidos o sin commitear
 if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "Detectados cambios no añadidos o sin commitear. Realizando commit temporal..."
   git add .
@@ -19,10 +25,10 @@ fi
 echo "Actualizando la rama local con el remoto..."
 git pull origin ci_jenkins --rebase || { echo "Error durante git pull --rebase"; exit 1; }
 
-# Agregar cambios y hacer commit
-echo "Agregando cambios y haciendo commit..."
+# Agregar cambios reales y hacer commit
+echo "Agregando cambios reales y haciendo commit..."
 git add README.md
-git commit -m "$COMMIT_MESSAGE" || echo "No hay cambios para commitear"
+git commit -m "$COMMIT_MESSAGE" || echo "No hay cambios reales para commitear"
 
 # Hacer push
 echo "Haciendo push de los cambios..."
