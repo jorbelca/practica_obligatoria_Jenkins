@@ -25,6 +25,9 @@ if [ -n "$(git status --porcelain)" ]; then
   git commit -m "Commit temporal: Resolviendo cambios antes de pull"
 fi
 
+# Asegurarse de estar en la rama correcta (ci_jenkins)
+git checkout ci_jenkins || git checkout -b ci_jenkins
+
 # Actualizar la rama local con los cambios remotos
 echo "Actualizando la rama local con el remoto..."
 git fetch origin
