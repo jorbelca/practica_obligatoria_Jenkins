@@ -52,6 +52,9 @@ pipeline {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
                     sh """
+                        git fetch origin
+                        git checkout ci_jenkins || git checkout -b ci_jenkins
+                        git pull origin ci_jenkins --rebase
                         git add README.md
                         git commit -m 'Pipeline executada per ${params.Executor}. Motiu: ${params.Motiu}'
                         git push -u origin ci_jenkins
