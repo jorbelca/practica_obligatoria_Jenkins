@@ -1,11 +1,4 @@
 # Jenkins
-
-## Teoria
-
-# Jenkins
-
-## Índex
-
 - [Què és Jenkins?](#què-és-jenkins)
 - [Arquitectura](#arquitectura)
 - [Tipus de tasques](#tipus-de-tasques)
@@ -85,6 +78,9 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenk
    - Reiniciar Jenkins.
 5. **Desactivar (opcional)**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
 
+
+---
+---
 ## Práctica
 
 #### Preparar el projecte

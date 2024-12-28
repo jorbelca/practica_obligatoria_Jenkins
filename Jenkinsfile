@@ -52,30 +52,7 @@ pipeline {
                 }
             }
         }
-        // stage("Push to Git Repository") {
-        //     steps {
-        //         withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
-        //             sh """
-        //                 # Asegurar-se que no hay conflictos al cambiar de rama
-        //                 git add README.md
-        //                 git commit -m 'Guardando cambios antes del checkout' || echo "Nada que commitear"
-                        
-        //                 # Cambiar a la rama ci_jenkins
-        //                 git fetch origin
-        //                 git checkout ci_jenkins || git checkout -b ci_jenkins
-                        
-        //                 # Actualizar cambios remotos
-        //                 git pull origin ci_jenkins --rebase || echo "Nada que actualizar"
-                        
-        //                 # Confirmar y subir los cambios
-        //                 git add README.md
-        //                 git commit -m 'Pipeline executada per ${params.Executor}. Motiu: ${params.Motiu}' || echo "Nada que commitear"
-        //                 git push -u origin ci_jenkins
-        //                 """
-        //         }
-        //     }
-        // }
-
+   
         stage('Build') {
             steps {
                 script {

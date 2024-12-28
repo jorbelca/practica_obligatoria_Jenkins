@@ -14,6 +14,13 @@ if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
   git rebase --abort || echo "No había rebase activo que abortar"
 fi
 
+# Verificar si hay cambios no confirmados
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Hay cambios no confirmados. Realizando commit temporal..."
+  git add .
+  git commit -m "Commit temporal: Resolviendo cambios antes de pull"
+fi
+
 # Actualizar la rama local con los cambios remotos
 echo "Actualizando la rama local con el remoto..."
 git fetch origin
