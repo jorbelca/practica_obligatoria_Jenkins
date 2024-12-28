@@ -8,6 +8,10 @@ MOTIU=$2
 # Mensaje del commit
 COMMIT_MESSAGE="Pipeline executada per ${EXECUTOR}. Motiu: ${MOTIU}"
 
+
+# Configurar la identidad de Git para el usuario de Jenkins
+git config --global user.name "Jenkins CI"
+git config --global user.email "jenkins@example.com"
 # Verificar si hay un rebase en curso
 if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
   echo "Detectado un rebase en curso. Abortando rebase anterior..."
