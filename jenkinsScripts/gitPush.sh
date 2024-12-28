@@ -10,7 +10,7 @@ COMMIT_MESSAGE="Pipeline executada per ${EXECUTOR}. Motiu: ${MOTIU}"
 
 
 # Agregar cambios reales y hacer commit
-echo "Agregando cambios reales y haciendo commit..."
+echo "Agregando cambios y haciendo commit..."
 git add README.md
 git commit -m "$COMMIT_MESSAGE" || echo "No hay cambios reales para commitear"
 
