@@ -39,7 +39,7 @@ pipeline {
                     env.README_RESULT = update_readme == 0 ? 'success' : 'failure'
                 }
             }
-        
+        //NO FUNCIONA
         //    post {
         //         always{
         //              withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {

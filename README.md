@@ -1,4 +1,5 @@
 # Jenkins
+
 - [Què és Jenkins?](#què-és-jenkins)
 - [Arquitectura](#arquitectura)
 - [Tipus de tasques](#tipus-de-tasques)
@@ -78,9 +79,10 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenk
    - Reiniciar Jenkins.
 5. **Desactivar (opcional)**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
 
+---
 
 ---
----
+
 ## Pràctica
 
 #### Preparar el projecte
@@ -235,6 +237,7 @@ Fem un commit i executem la pipeline
 
 #### Push Changes
 
+
 #### Build
 
 Creem una nova stage dins del Jenkinsfile. Aquesta solament fara us del comando _npm run build_, per a empaquetar el projecte
@@ -249,6 +252,7 @@ Comencem creant un token a vercel per a que jenkins tinga permisos per a despleg
 ![](capturas/vercel/vercel_token.png)
 
 Guardem el token en una credencial global, per poder utilitzar-la en els pipelines de Jenkins
+![](capturas/vercel/tok.png)
 ![](capturas/vercel/credencial.png)
 
 Vinculem el projecte amb vercel, perque cree `.vercel/project.json` amb les caracteristiques del projecte
@@ -314,8 +318,13 @@ Fem el commit i comprovem els logs del pipeline
 Finalment, visitem Telegram
 ![](capturas/notification/message.png)
 
+Altra notificació amb un error en els tests
+![](capturas/notification/failure.png)
+
 ### RESULTADO DE LOS ÚLTIMOS TESTS
 
 <!---Start place for the badge -->
+
 [![Failure](https://img.shields.io/badge/test-failure-red)](https://www.cypress.io/)
+
 <!---End place for the badge -->
