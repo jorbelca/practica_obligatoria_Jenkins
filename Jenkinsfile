@@ -40,19 +40,31 @@ pipeline {
                 }
             }
         
-           post {
-                always{
-                     withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
-                        script {
-                            sh """
-                                ./jenkinsScripts/gitPush.sh '${params.Executor}' '${params.Motiu}'
-                            """
-                        }
-                    }
+        //    post {
+        //         always{
+        //              withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
+        //                 script {
+        //                     sh """
+        //                         ./jenkinsScripts/gitPush.sh '${params.Executor}' '${params.Motiu}'
+        //                     """
+        //                 }
+        //             }
+        //         }
+        //     }
+        }
+        stage("Push to Git Repository") {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
+                    sh """
+                        # Confirmar y subir los cambios
+                        git add README.md
+                        git commit -m 'Pipeline executada per ${params.Executor}. Motiu: ${params.Motiu}' || echo "Nada que commitear"
+                        git push -u origin ci_jenkins
+                        """
                 }
             }
         }
-   
+
         stage('Build') {
             steps {
                 script {
