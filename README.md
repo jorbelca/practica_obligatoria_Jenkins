@@ -12,7 +12,7 @@
 - [Conceptes clau](#conceptes-clau)
 - [Sintaxi](#sintaxi)
   - [Seccions principals](#seccions-principals)
-  - [Directives](#directives)
+  - [Directives](#directives-principals)
 - [La nostra primera pipeline](#la-nostra-primera-pipeline)
 - [Credencials](#credencials)
 
@@ -28,16 +28,19 @@ Jenkins és un servidor de codi obert que automatitza tasques relacionades amb l
 
 Jenkins utilitza una arquitectura mestre/esclau:
 
-- **Mestre**: Programa treballs, envia tasques als esclaus, monitora el seu estat i recupera resultats.
+- **Mestre**: Programa treballs, envia tasques als esclaus, monitoritza el seu estat i recupera resultats.
 - **Esclau**: Executa els treballs enviats pel mestre.
 
 ---
 
 ## Tipus de tasques
 
+Treballs o un conjunts d'instruccions programables
+perquè ocorreguen junt amb una determinada acció
+
 - **Projecte d'estil lliure**: Tasques simples.
 - **Pipeline**: Fluxos de treball sencers.
-- **Multiconfiguració**: Execució en múltiples entorns.
+- **Multiconfiguració**: Mateixa tasca s'executa en múltiples entorns.
 - **Carpeta**: Organització de tasques.
 - **Organització GitHub**: Escaneja comptes de GitHub per crear pipelines.
 - **Multibranch pipeline**: Pipelines per a diferents branques d'un projecte.
@@ -56,7 +59,7 @@ Jenkins utilitza una arquitectura mestre/esclau:
 
 Es pot instal·lar amb paquets del sistema, Docker o com a aplicació independent amb Java Runtime Environment.
 
-### Exemple amb Docker:
+### ex. Docker:
 
 ```bash
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenkins/jenkins
@@ -77,25 +80,25 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenk
 
 ---
 
-## Instal·lant plugins
+## Instal·lació de plugins
 
 1. **Accedir al marketplace**: [plugins.jenkins.io](https://plugins.jenkins.io/).
 2. **Buscar un plugin**: Verificar compatibilitat, ús i documentació.
 3. **Instal·lar**: Seleccionar "Instal·lar sense reiniciar" o "Instal·lar i reiniciar".
-4. **Desinstal·lar (opcional)**:
+4. **Desinstal·lar**:
    - Eliminar el fitxer `.jpi` o `.hpi` de `/var/jenkins_home/plugins`.
    - Reiniciar Jenkins.
-5. **Desactivar (opcional)**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
+5. **Desactivar**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
 
 ## Pipeline de Jenkins
 
-Una pipeline és un conjunt de complements que permet a Jenkins implementar i integrar processos d'entrega contínua de forma seqüencial o complexa. Simplifica la creació de seqüències de tasques que anteriorment requerien configuracions més complicades.
+Una pipeline és un conjunt de complements que permet a Jenkins implementar e integrar processos d'entrega contínua de forma seqüencial o complexa. Simplifica la creació de seqüències de tasques que anteriorment requerien configuracions més complicades.
 
 [Documentació oficial](https://www.jenkins.io/doc/book/pipeline/)
 
 ### Avantatges
 
-- **Codi:** Implementació com a codi registrat al control de versions.
+- **Codi:** Implementació com a codi registrat al control de versions. Es editable i revisable
 - **Pausable:** Pot parar-se i esperar intervencions humanes.
 - **Versàtil:** Permet bucles, paral·lelisme i tasques complexes.
 - **Extensible:** Compatible amb extensions i plugins.
@@ -106,17 +109,14 @@ Una pipeline és un conjunt de complements que permet a Jenkins implementar i in
 
 Un **Jenkinsfile** és el fitxer on es defineix la pipeline. Es considera bona pràctica incloure'l al repositori del projecte.
 
-### Beneficis:
-
-- Facilita la col·laboració en equips.
-- Permet versions i revisions del pipeline (pipeline-as-code).
+Una pipeline també es pot definir a la interfice de Jenkins.
 
 ---
 
 ## Conceptes clau
 
-- **Agent:** Màquina on s'executa la pipeline.
-- **Stage:** Subdivisions del pipeline (ex. "Build", "Test", "Deploy").
+- **Agent:** Màquina que executa la pipeline.
+- **Stage:** Subdivisions de la pipeline (ex. "Build", "Test", "Deploy").
 - **Step:** Tasques individuals dins d'una etapa (ex. `echo "Hola"`).
 
 ---
@@ -125,10 +125,10 @@ Un **Jenkinsfile** és el fitxer on es defineix la pipeline. Es considera bona p
 
 ### Tipus de sintaxi
 
-- **Declarativa:** Recomanada per la seva senzillesa.
+- **Declarativa:** Recomanada per la seva senzillesa i flexibilitat.
 - **Imperativa:** Permet més flexibilitat, però és més complexa.
 
-#### Exemple de pipeline declarativa:
+#### Exemple de una pipeline declarativa (llenguatge groovy):
 
 ```groovy
 pipeline {
@@ -157,12 +157,13 @@ pipeline {
 
 1. **agent (requerit):** Defineix on s’executa la pipeline.
 
-   - **any:** Qualsevol agent disponible.
-   - **docker:** Imatge Docker específica.
+   - **any:** Executa la pipeline qualsevol agent disponible.
+   - **none:** Cada stage deu de tindre definit el seu propi agent.
+   - **docker:** Executa la pipeline en una Imatge Docker específica o un dockerfile.
 
 2. **stages (requerit):** Conté les etapes de la pipeline.
 
-3. **steps (requerit):** Accions a executar dins de cada etapa.
+3. **steps (requerit):** Accions (passos) a executar dins de cada `stage`.
 
 4. **post (opcional):** Accions que es fan després d’una etapa segons condicions (e.g., `always`, `success`).
 
@@ -170,19 +171,30 @@ pipeline {
 
 ## Directives principals
 
-1. **environment:** Defineix variables d’entorn, incloent-hi credencials.
+1. **environment:** Defineix variables d’entorn, incloent-hi credencials. Parells clau-valor.
 
-2. **parameters:** Paràmetres que l’usuari pot definir abans d’executar la pipeline.
+2. **options:** Defineix opcions a l'hora d'executar de la pipeline.
 
-3. **triggers:** Configura execucions automàtiques (e.g., `cron` o `pollScm`).
+   - _retry:_ Torna a executar la pipeline n vegades
+   - _timeout:_ Temps máxim per executar la pipeline
+   - _timestamps:_ Mostra l'hora en les eixides per consola
 
-4. **tools:** Eines que es poden autoinstalar al PATH.
+3. **parameters:** Paràmetres que l’usuari pot definir abans d’executar la pipeline (string, text,booleanParam,..).
+
+4. **triggers:** Configura execucions automàtiques (e.g., `cron` o `pollScm`).
+
+5. **tools:** Eines que es poden autoinstalar al PATH. Deuen definir-se, Configuració > Configuració d'eines
+
+6. **input:** Permet pausar la pipleline, per introduir valors per pantalla.
+   - _message:_ Missatge que es mostra
+   - _ok:_ Text del botó de submitt
+   - _submitter:_ Usuaris autoritzats
+   - _parameters:_ Parámetres utilitzables
+7. **parallel:** Permet la paralelització a l'hora d'executar diferents stages
 
 ---
 
 ## La nostra primera pipeline
-
-### Passos:
 
 1. **Crear una tasca:**  
    Al menú principal de Jenkins, seleccionar “Nova Tasca”.
@@ -201,8 +213,6 @@ pipeline {
 ---
 
 ## Credencials
-
-### Tipus de credencials:
 
 1. Usuari i password.
 2. App de GitHub.
@@ -434,7 +444,12 @@ Canviem permisos del arxiu que conté el script, per a que la maquina de Jenkins
 
 Creem una nova stage dins del jenkinsFile.
 
-- S'executa si totes les demes stages han acabat be (succesfull)
+- S'executa si totes les demes stages han acabat be (success)
+
+  - currentBuild.result == null: Significa que la build actual encara no té un resultat definit. Això passa quan s’executa per primera vegada.
+
+  - currentBuild.result == 'SUCCESS': Significa que la build anterior o l’estat actual és SUCCESS. Això assegura que només es continuarà si tot ha anat bé.
+
 - Primer instala el cli de vercel en la máquina de Jenkins
 - Despres executa el script anteriorment creat amb el token de Vercel com a credencial global
 
@@ -488,5 +503,7 @@ Altra notificació amb un error en els tests
 ### RESULTADO DE LOS ÚLTIMOS TESTS
 
 <!---Start place for the badge -->
+
 [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
+
 <!---End place for the badge -->
