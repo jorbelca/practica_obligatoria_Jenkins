@@ -1,11 +1,5 @@
 # Jenkins
 
-## Teoria
-
-# Jenkins
-
-## Índex
-
 - [Què és Jenkins?](#què-és-jenkins)
 - [Arquitectura](#arquitectura)
 - [Tipus de tasques](#tipus-de-tasques)
@@ -13,12 +7,20 @@
 - [Instal·lació](#instal·lació)
 - [Executant una primera tasca](#executant-una-primera-tasca)
 - [Instal·lant plugins](#instal·lant-plugins)
+- [Pipeline de Jenkins](#pipeline-de-jenkins)
+- [Jenkinsfile](#jenkinsfile)
+- [Conceptes clau](#conceptes-clau)
+- [Sintaxi](#sintaxi)
+  - [Seccions principals](#seccions-principals)
+  - [Directives](#directives)
+- [La nostra primera pipeline](#la-nostra-primera-pipeline)
+- [Credencials](#credencials)
 
 ---
 
 ## Què és Jenkins?
 
-Jenkins és un servidor de codi obert que automatitza tasques relacionades amb la creació, prova i implementació de programari.
+Jenkins és un servidor de codi obert que automatitza tasques relacionades amb la creació, prova o lliurament i implementació de programari.
 
 ---
 
@@ -85,7 +87,142 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenk
    - Reiniciar Jenkins.
 5. **Desactivar (opcional)**: Afegir `.disabled` al fitxer `.jpi` o `.hpi` per evitar inicialitzar-lo.
 
-## Práctica
+## Pipeline de Jenkins
+
+Una pipeline és un conjunt de complements que permet a Jenkins implementar i integrar processos d'entrega contínua de forma seqüencial o complexa. Simplifica la creació de seqüències de tasques que anteriorment requerien configuracions més complicades.
+
+[Documentació oficial](https://www.jenkins.io/doc/book/pipeline/)
+
+### Avantatges
+
+- **Codi:** Implementació com a codi registrat al control de versions.
+- **Pausable:** Pot parar-se i esperar intervencions humanes.
+- **Versàtil:** Permet bucles, paral·lelisme i tasques complexes.
+- **Extensible:** Compatible amb extensions i plugins.
+
+---
+
+## Jenkinsfile
+
+Un **Jenkinsfile** és el fitxer on es defineix la pipeline. Es considera bona pràctica incloure'l al repositori del projecte.
+
+### Beneficis:
+
+- Facilita la col·laboració en equips.
+- Permet versions i revisions del pipeline (pipeline-as-code).
+
+---
+
+## Conceptes clau
+
+- **Agent:** Màquina on s'executa la pipeline.
+- **Stage:** Subdivisions del pipeline (ex. "Build", "Test", "Deploy").
+- **Step:** Tasques individuals dins d'una etapa (ex. `echo "Hola"`).
+
+---
+
+## Sintaxi
+
+### Tipus de sintaxi
+
+- **Declarativa:** Recomanada per la seva senzillesa.
+- **Imperativa:** Permet més flexibilitat, però és més complexa.
+
+#### Exemple de pipeline declarativa:
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Construint...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Provant...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Desplegant...'
+            }
+        }
+    }
+}
+```
+
+## Seccions principals
+
+1. **agent (requerit):** Defineix on s’executa la pipeline.
+
+   - **any:** Qualsevol agent disponible.
+   - **docker:** Imatge Docker específica.
+
+2. **stages (requerit):** Conté les etapes de la pipeline.
+
+3. **steps (requerit):** Accions a executar dins de cada etapa.
+
+4. **post (opcional):** Accions que es fan després d’una etapa segons condicions (e.g., `always`, `success`).
+
+---
+
+## Directives principals
+
+1. **environment:** Defineix variables d’entorn, incloent-hi credencials.
+
+2. **parameters:** Paràmetres que l’usuari pot definir abans d’executar la pipeline.
+
+3. **triggers:** Configura execucions automàtiques (e.g., `cron` o `pollScm`).
+
+4. **tools:** Eines que es poden autoinstalar al PATH.
+
+---
+
+## La nostra primera pipeline
+
+### Passos:
+
+1. **Crear una tasca:**  
+   Al menú principal de Jenkins, seleccionar “Nova Tasca”.
+
+2. **Nom i configuració:**  
+   Escriure un nom i seleccionar el tipus “Pipeline”.
+
+3. **Definició del pipeline:**
+
+   - Introduir el contingut directament.
+   - Configurar un repositori que conté el `Jenkinsfile`.
+
+4. **Executar la pipeline:**  
+   Tornar al menú principal de la tasca i fer clic a “Construir ara”.
+
+---
+
+## Credencials
+
+### Tipus de credencials:
+
+1. Usuari i password.
+2. App de GitHub.
+3. Usuari SSH.
+4. Fitxer secret.
+5. Text encriptat (secret).
+6. Certificat.
+
+### Configuració:
+
+Es defineixen des del panell d’administració de Jenkins i es poden aplicar a:
+
+- **Tot Jenkins.**
+- **Ítems específics.**
+
+---
+
+---
+
+# Pràctica
 
 #### Preparar el projecte
 
@@ -123,7 +260,7 @@ Aquesta pipeline:
 
 - Tindrá com a agent, any.
 - Tools, utilitzará node 20.
-  (El plugin que fa us de node y permiteix fer us de les diferents versions l'havia descarregat i configurat globalment en les práctiques anteriors)
+  (El plugin que permiteix fer us de les diferents versions de node ja l'havia descarregat i configurat globalment en les práctiques anteriors)
 - Almacenará les dades que se li passen per input del UI de Jenkins com a parametres.(Les caracteristiques d' aquests parametres es veuen clarament en les captures)
 - Hem creat una stage que mostre per consola els valors dels inputs aportats, per a comprovar que tot funciona correctamet.
 
@@ -137,16 +274,16 @@ Seguidament, creem una "Nueva Tarea" en Jenkins del tipus Pipeline.
 
 ![](capturas/dades/tarea.png)
 
-Aquesta pipeline deu de configurarse. Hem de configurar la pipeline per a que utilitze el codi del repo de github. `Pipeline > Pipeline script from SCM > Github `. Afegim la url, la rama i les credencials que tenen el token. (Pareix que done error, pero es que el token era de tipus 'fine-grained' i només estava configurat per al repo de les práctiques de 'prova')
+Aquesta pipeline deu de configurarse. Hem de configurar la pipeline per a que utilitze el codi del repo de github. `Pipeline > Pipeline script from SCM > Github `. Afegim la url, la rama i les credencials que tenen el token. (Pareix que done error, pero es que el token era de tipus 'fine-grained' i només estava configurat per al repo de les práctiques anteriors de 'prova')
 
 ![](capturas/dades/pipe.png)
 
-En aquest cas, fa us d' un repo de github. Per a conseguir el codi del repo precisará d'un token (que ja tenia configurat com a secret global de les practiques anteriors).
+En aquest cas, l'exercici fa us d' un repo de github. Per a conseguir el codi del repo precisará d'un token (que ja tenia configurat com a secret global de les practiques anteriors).
 
 ![](capturas/dades/github_token.png)
 ![](capturas/dades/gh_token.png)
 
-També, aquest pipeline deu ser configurat perque requerisca al usuari els tres parametres que haviem declarat en el Jenkinsfile. En `Esta ejecucion debe parametrizarse`, creem tres parametre de cadena y els asignem el mateix nom que tenen en el Jenkinsfile. (Les altres variables encara que no les fiquem, Jenkins les agafa de la declaració del Jenkinsfile)
+També, aquest pipeline deu ser configurada perque requerisca al usuari els tres parametres que haviem declarat en el Jenkinsfile. En `Esta ejecucion debe parametrizarse`, creem tres parametre de cadena y els asignem el mateix nom que tenen en el Jenkinsfile. (Les altres variables encara que no les fiquem, Jenkins les agafa de la declaració del Jenkinsfile)
 
 ![](capturas/dades/param_config.png)
 
@@ -160,14 +297,14 @@ Captura del resultat, amb la impresió dels valors per consola.
 
 #### Linter
 
-En el meu cas no es precís instalar el plugin de eslint per a react. Ja que remix el du incorporat.
+En el meu cas no es precís instalar el plugin de eslint per a react. Ja que el framework Remix el du incorporat.
 Captura del package.json
 ![](capturas/linter/package.png)
 
 Creem una primera stage del pipeline que incorpore el codi que ha de fer que s'execute el linter per part del servidor Jenkins. Centrant-se en la stage. Solament te dos comandos:
 
-- Npm install , per aconseguir les dependencies
-- Npm run lint, per executar el linter.
+- npm install , per aconseguir les dependencies
+- npm run lint, per executar el linter.
 
 ![](capturas/linter/stage.png)
 
@@ -175,7 +312,7 @@ Executem el pipeline, en un primer moment:
 
 ![](capturas/linter/success.png)
 
-Per a comprovar que `falla` quant ha de ser així, incorporem algunes regles al .eslint:
+Per a comprovar que `falla` quant hi ha un error, incorporem algunes regles al .eslint:
 
 ![](capturas/linter/reglas.png)
 
@@ -191,19 +328,19 @@ Executem el pipeline, per a comprovar:
 Instalem jest en el nostre projecte
 ![](capturas/linter/npm_i.png)
 
-Creem un arxiu jest.config.cjs per a indicar la configuració de jest
+Creem un arxiu jest.config.cjs per a establir la configuració de jest
 ![](capturas/test/jest_config.png)
 
 Modifiquem el package.json per a incorporar un nou script per a poder executar jest
 ![](capturas/test/pkg.png)
 
-Creem un arxiu func.ts en app>helpers que contindrá diverses funcions
+Creem un arxiu func.ts en app > helpers que contindrá diverses funcions
 ![](capturas/test/functions.png)
 
 Creem els tests de Jest en test > math.test.ts
 ![](capturas/test/tests.png)
 
-Creem una nova stage dins del Jenkinsfile. Per agilizar, s´ha decidit extraure la instalacio de dependencies al principi, per a que totes les stages que ho precisen fagen us d´ells.
+Creem una nova stage dins del Jenkinsfile. Per agilizar, s´ha decidit extraure la instalacio de dependencies (npm install) al principi, per a que totes les stages que ho precisen fagen us d´ells.
 ![](capturas/test/jenkinsfile.png)
 
 Fem el commit i comprovem en Jenkins
@@ -220,17 +357,17 @@ Primer, modifiquem el README per donar lloc al badge en l'ultima part del docume
 
 En /jenkinsScripts creem un nou arxiu `updateReadme.js` que contindra la funcionalitat per actualitzar el README.
 
-- Una funcio amb un parametre que sera el resultat del test
-- Segon el parametre (succesfull / failure) tindrá una image o altra
+- Una funcio que te un parametre que sera el resultat del test
+- Segon el parametre (succesfu / failure) tindrá una image o altra
 - LLig el document i modifica una secció amb uns comentaris especifics per a incloure el badge
 - Es modifica l'arxiu README
-- Es crida a la funcio amb un argument que es passa al executar el script
+- S'invoca a la funcio creada amb el parámetre que es passa al executar el script
 
 ![](capturas/badge/script.png)
 
-Passem al jenkinsfile, creem una nova stage i modifiquem l' anterior que contenia els tests.
+Passant al jenkinsfile, creem una nova stage i modifiquem l' anterior stage que executava els tests.
 
-- S' executen els tests i el resultat s'enmagatzema en una variable. Aquesta posteriorment, s'assignará a una variable d'entorn amb el valor success o failure. (Es fa ús del returnStatus per a controlar en cas de que fallen, i axí asignem el valor que volem i no es trenca el flow del programa)
+- S' executen els tests i el resultat s'enmagatzema en una variable. Aquesta posteriorment, s'assignará a una variable d'entorn amb el valor success o failure. (Es fa ús del returnStatus per a controlar la resposta en cas de que fallen, i axí asignem el valor que volem i no s'interromp el flow del programa)
 - S' executa el script anteriorment creat amb la variable d'entorn
   ![](capturas/badge/stage.png)
 
@@ -239,12 +376,34 @@ Fem un commit i executem la pipeline
 
 #### Push Changes
 
+Creem una nova stage dins del Jenkinsfile.
+
+- Comprova que es troba en la rama correcta
+- Afegix l' arxiu README
+- Fa el commit amb els paràmetres que al principi em recopilat
+- Fa el push a la branca
+
+![](capturas/push/stage.png)
+
+Executem la pipeline
+![](capturas/push/test.png)
+![](capturas/push/success.png)
+
+Anem a github i comprovem el últim commit
+![](capturas/push/commit.png)
+
+Al final del document trobem el badge
+![](capturas/push/ok.png)
+
+Finalment, Adjunte captura del commit d'un badge amb els test havent fallat
+![](capturas/push/fail.png)
+
 #### Build
 
 Creem una nova stage dins del Jenkinsfile. Aquesta solament fara us del comando _npm run build_, per a empaquetar el projecte
 ![](capturas/build/stage.png)
 
-Fem un commit i comprovem en el pipeline de Jenkins
+Fem un commit i comprovem en el pipeline de Jenkins que la execució haja sigut existosa
 ![](capturas/build/ok.png)
 
 #### Deploy Vercel
@@ -253,9 +412,11 @@ Comencem creant un token a vercel per a que jenkins tinga permisos per a despleg
 ![](capturas/vercel/vercel_token.png)
 
 Guardem el token en una credencial global, per poder utilitzar-la en els pipelines de Jenkins
+![](capturas/vercel/tok.png)
 ![](capturas/vercel/credencial.png)
 
-Vinculem el projecte amb vercel, perque cree `.vercel/project.json` amb les caracteristiques del projecte
+Vinculem el projecte amb vercel, executant en consola vercel --link token -project nom_projecte
+.Perque cree `.vercel/project.json` amb les caracteristiques del projecte
 ![](capturas/vercel/link.png)
 
 Arxiu project.json
@@ -268,7 +429,7 @@ Passem al projecte en si, primer creem el arxiu deployVercel.sh dins de /jenkins
 
 ![](capturas/vercel/script.png)
 
-Canviem permisos del arxiu que conté el script, per a la maquina de Jenkins
+Canviem permisos del arxiu que conté el script, per a que la maquina de Jenkins puga exectuar-ho sense problemes.
 ![](capturas/vercel/chmod.png)
 
 Creem una nova stage dins del jenkinsFile.
@@ -279,10 +440,13 @@ Creem una nova stage dins del jenkinsFile.
 
 ![](capturas/vercel/stage.png)
 
+Modifiquem el nostre projecte per a que no vinga "de serie"
+![](capturas/vercel/mods.png)
+
 Fem el commit i comprovem els logs del pipeline
 ![](capturas/vercel/ok.png)
 
-Finalment, naveguem al deploy (url mes amigable que es troba en el dashboard)
+Finalment, naveguem al deploy (url mes amigable que es troba en el dashboard de Vercel)
 ![](capturas/vercel/deploy.png)
 
 #### Notificació
@@ -296,7 +460,7 @@ Guardem el token del bot de Telegram en una credencial global, per poder utilitz
 Creem un nou arxiu en `jenkinsScripts/notification.js`
 
 - Crea un nou bot
-- Agafa les cuatre variables dels procesos anteriors i la que inclou el Chat ID.
+- Agafa les cuatre variables dels procesos anteriors i la que inclou el Chat ID del primer punt.
 - Es crea un missatge i el bot l' envia
   ![](capturas/notification/script.png)
 
@@ -318,8 +482,13 @@ Fem el commit i comprovem els logs del pipeline
 Finalment, visitem Telegram
 ![](capturas/notification/message.png)
 
+Altra notificació amb un error en els tests
+![](capturas/notification/failure.png)
+
 ### RESULTADO DE LOS ÚLTIMOS TESTS
 
 <!---Start place for the badge -->
+
+[![Failure](https://img.shields.io/badge/test-failure-red)](https://www.cypress.io/)
 
 <!---End place for the badge -->
