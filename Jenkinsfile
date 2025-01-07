@@ -52,16 +52,12 @@ pipeline {
         //         }
         //     }
         }
-        stage("Push to Git Repository") {
+      stage("Push to Git Repository") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'b2343be2-2a1a-4059-baa4-2653be9343cc', gitToolName: 'Default')]) {
                     sh """
-                        git checkout ci_jenkins || echo "No se encuentra la rama"
-                        # Confirmar y subir los cambios
-                        git add README.md
-                        git commit -m 'Pipeline executada per ${params.Executor}. Motiu: ${params.Motiu}' || echo "Nada que commitear"
-                        git push -u origin ci_jenkins
-                        """
+                        ./jenkinsScripts/gitPush.sh ${params.Executor} ${params.Motiu}
+                    """
                 }
             }
         }
