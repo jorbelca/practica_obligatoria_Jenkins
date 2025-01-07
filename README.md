@@ -386,13 +386,16 @@ Fem un commit i executem la pipeline
 
 #### Push Changes
 
-Creem una nova stage dins del Jenkinsfile.
+Creem un nou arxiu dins de la carpeta jenkinsScripts anomenat gitPush.sh
 
+- S' executa en bash
 - Comprova que es troba en la rama correcta
-- Afegix l' arxiu README
-- Fa el commit amb els paràmetres que al principi em recopilat
+- Afegix l' arxiu README a l' area d' intercanvi
+- Fa el commit amb els paràmetres
 - Fa el push a la branca
+  ![](capturas/push/file.png)
 
+Creem una nova stage dins del Jenkinsfile. Amb el token de github executará l'arxiu anteriorment creat. I, passará els parametres obtinguts d' anteriors stages per poder fer el push.
 ![](capturas/push/stage.png)
 
 Executem la pipeline
@@ -503,5 +506,12 @@ Altra notificació amb un error en els tests
 ### RESULTADO DE LOS ÚLTIMOS TESTS
 
 <!---Start place for the badge -->
+
 [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
+
+
+
+
+
+
 <!---End place for the badge -->
